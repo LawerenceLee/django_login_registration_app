@@ -14,6 +14,7 @@ def register(request):
     if 'is_logged_in' not in request.session:
         request.session['is_logged_in'] = False
     elif request.session["is_logged_in"] is True:
+        messages.error(request, "You are aready logged in")
         return redirect("/success")
 
     if request.method == "POST":
@@ -53,14 +54,15 @@ def register(request):
 
 #  /login
 def login(request):
-    if request.session["is_logged_in"] is True:
+    if 'is_logged_in' not in request.session:
+        request.session['is_logged_in'] = False
+    elif request.session["is_logged_in"] is True:
         return redirect("/success") 
     elif request.method == "POST":
         try:
             user = User.objects.get(email=request.POST["email"])
-        except User.DoesNotExist:
+         except User.DoesNotExist:
             messages.error(request, "Email does not exist")
-            return redirect("/login")
         else:
             passed_pswd = request.POST['password']
             if bcrypt.checkpw(passed_pswd.encode(), user.password.encode()):
@@ -76,16 +78,21 @@ def login(request):
                 )
                 messages.success(request, "Successful Login")
                 return redirect("/success")
+            else:
+                messages.error(
+                    request, "Either Email or Password or both is not correct"
+                )
 
-        messages.error(request, "Either Email or Password is not correct")
-        return redirect("/login")
-
-    return render(request, "log_reg_app/login.html")
+    return render(
+            request, "log_reg_app/login_reg.html", {"old_form": request.POST}
+        )
 
 
 #  /success
 def success(request):
-    if request.session["is_logged_in"] is True:
+    if 'is_logged_in' not in request.session:
+        request.session['is_logged_in'] = False
+    elif request.session["is_logged_in"] is True:
         # Have this route be the exit point of this app
         # change the return below as needed to accomplish that
         return render(request, "log_reg_app/success.html")
@@ -95,7 +102,9 @@ def success(request):
 
 
 def logoff(request):
-    if request.session["is_logged_in"] is True:
+    if 'is_logged_in' not in request.session:
+        request.session['is_logged_in'] = False
+    elif request.session["is_logged_in"] is True:
         messages.success(request, "You successfully logged off")
         keys_vals_to_del = [
             "is_logged_in", "first_name", "last_name", "email",
