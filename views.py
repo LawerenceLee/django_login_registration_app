@@ -13,6 +13,8 @@ from form_validation import FormValidation
 def register(request):
     if 'is_logged_in' not in request.session:
         request.session['is_logged_in'] = False
+    elif request.session["is_logged_in"] is True:
+        return redirect("/success")
 
     if request.method == "POST":
         form = FormValidation(request.POST)
@@ -51,7 +53,9 @@ def register(request):
 
 #  /login
 def login(request):
-    if request.method == "POST":
+    if request.session["is_logged_in"] is True:
+        return redirect("/success") 
+    elif request.method == "POST":
         try:
             user = User.objects.get(email=request.POST["email"])
         except User.DoesNotExist:
@@ -82,6 +86,8 @@ def login(request):
 #  /success
 def success(request):
     if request.session["is_logged_in"] is True:
+        # Have this route be the exit point of this app
+        # change the return below as needed to accomplish that
         return render(request, "log_reg_app/success.html")
 
     messages.error(request, "You have not logged in yet")
