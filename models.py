@@ -13,6 +13,6 @@ class User(models.Model):
     changed_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return "First: {}, Last: {}, Email: {}, Password: {}".format(
+        return "First: {}\nLast: {}\nEmail: {}\nPassword: {}".format(
             self.first_name, self.last_name, self.email, self.password
         )
