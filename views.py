@@ -61,12 +61,13 @@ def login(request):
     elif request.method == "POST":
         try:
             user = User.objects.get(email=request.POST["email"])
-         except User.DoesNotExist:
+        except User.DoesNotExist:
             messages.error(request, "Email does not exist")
         else:
             passed_pswd = request.POST['password']
             if bcrypt.checkpw(passed_pswd.encode(), user.password.encode()):
                 request.session['is_logged_in'] = True
+                request.session['user_id'] = user.id
                 request.session["first_name"] = user.first_name
                 request.session['last_name'] = user.last_name
                 request.session['email'] = user.email
