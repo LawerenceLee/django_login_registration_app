@@ -41,7 +41,7 @@ def register(request):
                 ).save()
                 messages.add_message(
                     request, messages.SUCCESS,
-                    "Your user info was successfully submitted"
+                    "Your user info was successfully submitted, please login"
                 )
                 return redirect("/login")
             else:
