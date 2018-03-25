@@ -3,4 +3,4 @@ A functioning prebuilt login and registration Django App
 
 To Use with template:
 
-django-admin startapp --template=https://github.com/LawerenceLee/django_login_registration_app/archive/master.zip log_reg_app
+django-admin startapp --template=https://github.com/LawerenceLee/django_login_registration_app/archive/log_reg_in_one_template .zip log_reg_app
