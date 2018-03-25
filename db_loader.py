@@ -56,5 +56,4 @@ def see_users():
 
 if __name__ == "__main__":
     os.system("cls" if os.name == "nt" else "clear")
-    delete_users()
     see_users()
