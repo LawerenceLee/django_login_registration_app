@@ -85,7 +85,7 @@ def login(request):
                 )
 
     return render(
-            request, "log_reg_app/login_reg.html", {"old_form": request.POST}
+            request, "log_reg_app/login.html", {"old_form": request.POST}
         )
 
 
